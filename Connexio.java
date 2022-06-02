@@ -11,6 +11,10 @@ public class Connexio {
 
     private Connection connection ;
     
+    /*public Connexio() throws SQLException{
+        conn = DriverManager.getConnection("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+    }*/
+    
    
 
     public Connexio(String driverClassName, String dbURL, String user, String password) throws SQLException, ClassNotFoundException {

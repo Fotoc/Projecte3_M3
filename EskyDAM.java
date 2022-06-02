@@ -1,5 +1,13 @@
 package Projecte3;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,7 +39,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class EskyDAM extends Application{
+public class EskyDAM extends Application {
+
     TextField txtCliNom;
     TextField txtCliDni;
     TextField txtCliCognoms;
@@ -39,125 +48,118 @@ public class EskyDAM extends Application{
     TextField txtCliCursNom;
     TextField txtCliCursPreu;
     TextField txtCliCursNivell;
-    
-     public static void main (String[] args){
+
+    public static void main(String[] args) {
         launch();
     }
-
 
     @Override
     public void start(Stage escenari) throws Exception {
         escenari.getIcons().add(new Image("Imatges/logo.png"));
-        
+
         escenari.setTitle("ESKYDAM");
         BorderPane bp = new BorderPane();
-       
+
         bp.setTop(partSuperior());
         bp.setStyle("-fx-background-color: #7ca4ff;");
-        
+
         Pane inferior = partInferior();
         bp.setBottom(inferior);
-        BorderPane.setMargin(inferior,new Insets(20,20,20,20));
-       
+        BorderPane.setMargin(inferior, new Insets(20, 20, 20, 20));
+
         Pane lEsquerra = partEsquerra();
         bp.setLeft(lEsquerra);
-        BorderPane.setMargin(lEsquerra, new Insets(20,20,20,20));
-        
+        BorderPane.setMargin(lEsquerra, new Insets(20, 20, 20, 20));
+
         bp.setCenter(formulariCentral());
-        
+
         Pane lDreta = partDreta();
         bp.setRight(lDreta);
-        BorderPane.setMargin(lDreta, new Insets(20,20,20,20));
-        
-      
-        
-       
-        Scene escena = new Scene (bp);
+        BorderPane.setMargin(lDreta, new Insets(20, 20, 20, 20));
+
+        Scene escena = new Scene(bp);
         escenari.setScene(escena);
         escenari.setMinHeight(1000);
         escenari.setMinWidth(100);
-        
+
         escenari.show();
-  
-    
-}
-    
-    private GridPane formulariCentral(){
+
+    }
+
+    private GridPane formulariCentral() {
         GridPane gp = new GridPane();
-        
-        Label lblDni = new Label ("DNI");
+
+        Label lblDni = new Label("DNI");
         lblDni.setTextFill(Color.web("#ffffff"));
         DropShadow shadow = new DropShadow();
         lblDni.setEffect(shadow);
-        
-        Label lblNom = new Label ("Nom");
+
+        Label lblNom = new Label("Nom");
         lblNom.setTextFill(Color.web("#ffffff"));
         lblNom.setTranslateY(10);
         lblNom.setEffect(shadow);
-        
-        
-        Label lblCognoms = new Label ("Cognoms");
+
+        Label lblCognoms = new Label("Cognoms");
         lblCognoms.setTextFill(Color.web("#ffffff"));
         lblCognoms.setTranslateY(20);
         lblCognoms.setEffect(shadow);
-        
-        Label lblID = new Label ("ID");
+
+        Label lblID = new Label("ID");
         lblID.setTextFill(Color.web("#ffffff"));
         lblID.setTranslateY(30);
         lblID.setEffect(shadow);
-        
-        Label lblCursNom = new Label ("Nom");
+
+        Label lblCursNom = new Label("Nom");
         lblCursNom.setTextFill(Color.web("#ffffff"));
         lblCursNom.setTranslateY(40);
         lblCursNom.setEffect(shadow);
-        
-        Label lblPreu = new Label ("Preu hora");
+
+        Label lblPreu = new Label("Preu hora");
         lblPreu.setTextFill(Color.web("#ffffff"));
         lblPreu.setTranslateY(50);
         lblPreu.setEffect(shadow);
-        
-        Label lblNivell = new Label ("Nivell");
+
+        Label lblNivell = new Label("Nivell");
         lblNivell.setTextFill(Color.web("#ffffff"));
         lblNivell.setTranslateY(60);
         lblNivell.setEffect(shadow);
-       
-        
+
         txtCliDni = new TextField();
         DropShadow shadow1 = new DropShadow();
         txtCliDni.setEffect(shadow1);
-        
+
         txtCliNom = new TextField();
         txtCliNom.setTranslateY(10);
         DropShadow shadow2 = new DropShadow();
         txtCliNom.setEffect(shadow2);
-        
+
         txtCliCognoms = new TextField();
         txtCliCognoms.setTranslateY(20);
         DropShadow shadow3 = new DropShadow();
         txtCliCognoms.setEffect(shadow3);
-        
+
         txtCliCursID = new TextField();
         txtCliCursID.setTranslateY(30);
         DropShadow shadow4 = new DropShadow();
         txtCliCursID.setEffect(shadow4);
-        
+
         txtCliCursNom = new TextField();
         txtCliCursNom.setTranslateY(40);
         DropShadow shadow5 = new DropShadow();
         txtCliCursNom.setEffect(shadow5);
-        
+
         txtCliCursPreu = new TextField();
         txtCliCursPreu.setTranslateY(50);
         DropShadow shadow6 = new DropShadow();
         txtCliCursPreu.setEffect(shadow6);
-        
+
         txtCliCursNivell = new TextField();
         txtCliCursNivell.setTranslateY(60);
         DropShadow shadow7 = new DropShadow();
         txtCliCursNivell.setEffect(shadow7);
-        
+
         gp.setAlignment(Pos.CENTER);
-        
+
         gp.add(lblDni, 0, 0);
         gp.add(txtCliDni, 1, 0);
         gp.add(lblNom, 0, 1);
@@ -172,12 +174,12 @@ public class EskyDAM extends Application{
         gp.add(txtCliCursPreu, 1, 5);
         gp.add(lblNivell, 0, 6);
         gp.add(txtCliCursNivell, 1, 6);
-       
+
         return gp;
-        
+
     }
-    
-    private Pane partSuperior(){
+
+    private Pane partSuperior() {
         HBox hb = new HBox();
         Label lblEsky = new Label("ESKYDAM");
         lblEsky.setFont(new Font(40));
@@ -185,17 +187,16 @@ public class EskyDAM extends Application{
         DropShadow shadow = new DropShadow();
         lblEsky.setEffect(shadow);
         hb.setAlignment(Pos.CENTER);
-        ImageView logo = new ImageView ("Imatges/logo.png");
+        ImageView logo = new ImageView("Imatges/logo.png");
         logo.setFitHeight(80);
         logo.setFitWidth(80);
-        
-        
-        hb.getChildren().addAll(lblEsky,logo);
+
+        hb.getChildren().addAll(lblEsky, logo);
         return hb;
-        
+
     }
-    
-    private Pane partInferior(){
+
+    private Pane partInferior() {
         Button btn1 = new Button("Eliminar");
         btn1.setTextFill(Color.web("#ffffff"));
         Image img = new Image("Imatges/eliminar.png");
@@ -210,7 +211,7 @@ public class EskyDAM extends Application{
         transition.setAutoReverse(true);
         transition.setCycleCount(2);
         transition.play();
-        btn1.setOnAction(event ->{
+        btn1.setOnAction(event -> {
             txtCliDni.clear();
             txtCliNom.clear();
             txtCliCognoms.clear();
@@ -219,7 +220,7 @@ public class EskyDAM extends Application{
             txtCliCursPreu.clear();
             txtCliCursNivell.clear();
         });
-        
+
         Button btn2 = new Button("Llogar");
         btn2.setTextFill(Color.web("#ffffff"));
         btn2.setStyle("-fx-background-color:#0e0edb;");
@@ -235,9 +236,15 @@ public class EskyDAM extends Application{
         transition2.setAutoReverse(true);
         transition2.setCycleCount(2);
         transition2.play();
-        btn2.setOnAction(e -> llogar());
-                
+        btn2.setOnAction(e -> {
+            try {
+                llogar();
+            } catch (SQLException ex) {
+                Logger.getLogger(EskyDAM.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         
+
         Button btn3 = new Button("Tancar");
         btn3.setTextFill(Color.web("#ffffff"));
         btn3.setStyle("-fx-background-color:#0e0edb;");
@@ -256,42 +263,86 @@ public class EskyDAM extends Application{
         btn3.setOnAction((ActionEvent event) -> {
             Platform.exit();
         });
-        
+
         HBox hinferior = new HBox();
-        hinferior.getChildren().addAll(btn1,btn2,btn3);
+        hinferior.getChildren().addAll(btn1, btn2, btn3);
         hinferior.setAlignment(Pos.CENTER);
-        
-         
-               
+
         return hinferior;
-        
+
     }
-    
-    private void llogar(){
-        
-        if (txtCliDni.getText().isEmpty()){
+
+    private void llogar() throws SQLException{
+
+        if (txtCliDni.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Error");
             alert.setContentText("Has de seleccionar un client");
             alert.showAndWait();
-        } else if (txtCliCursID.getText().isEmpty()){
+        } else if (txtCliCursID.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setTitle("Error");
             alert.setContentText("Has de seleccionar un curs");
             alert.showAndWait();
-        }else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-             alert.setHeaderText(null);
-             alert.setTitle("Info");
-             alert.setContentText("Curs llogat amb exit");
-             alert.showAndWait();
-        } 
-            
+            alert.setHeaderText(null);
+            alert.setTitle("Info");
+            alert.setContentText("Curs llogat amb exit");
+            alert.showAndWait();
+
+        }
+
+        llogar_curs(txtCliDni, txtCliCursID);
+
     }
-    
-    private Pane partDreta() throws Exception{
+
+    private void llogar_curs(TextField txtCliDni, TextField txtCliCursID) throws SQLException {
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/esqui;";
+            con = DriverManager.getConnection(url, "root", "1234");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+        String dni = txtCliDni.getText();
+        String id = txtCliCursID.getText();
+
+        String sentenciaSql = "{call llogarCurs(?,?,2)}";
+
+        CallableStatement cs = con.prepareCall(sentenciaSql);
+
+        cs.setString(1, id);
+        cs.setString(2, dni);
+        cs.execute();
+        System.out.print("curs llogat\n");
+
+
+        //PreparedStatement sentencia = null;
+        /*try {
+            sentencia = conn.prepareStatement(sentenciaSql);
+            sentencia.setString(1, dni);
+            sentencia.setString(2, id);
+            sentencia.executeUpdate();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            if (sentencia != null) {
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+        }*/
+    }
+
+    private Pane partDreta() throws Exception {
         VBox vb = new VBox();
         Label lblDreta = new Label("Cursos");
         lblDreta.setFont(new Font(30));
@@ -299,66 +350,62 @@ public class EskyDAM extends Application{
 
         vb.setAlignment(Pos.CENTER);
         vb.setSpacing(15);
-        
+
         TabPane tp = new TabPane();
-        Tab tab1 = new Tab("Col·lectius",cursosColectius());
+        Tab tab1 = new Tab("Col·lectius", cursosColectius());
         Tab tab2 = new Tab("Competició", cursosCompeticio());
         Tab tab3 = new Tab("Individuals", cursosIndividuals());
         tp.getTabs().add(tab1);
         tp.getTabs().add(tab2);
         tp.getTabs().add(tab3);
-        
-        ImageView logo3 = new ImageView ("Imatges/esqui.png");
+
+        ImageView logo3 = new ImageView("Imatges/esqui.png");
         logo3.setFitHeight(150);
         logo3.setFitWidth(150);
         logo3.setTranslateY(40);
-                
-        vb.getChildren().addAll(lblDreta,tp,logo3);
+
+        vb.getChildren().addAll(lblDreta, tp, logo3);
         return vb;
     }
-    
-    private Pane cursosColectius() throws Exception{
-        Connexio con = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
-        
+
+    private Pane cursosColectius() throws Exception {
+        Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+
         VBox vb = new VBox();
         TableView<CursColectiu> tblCursos = new TableView<>();
         TableColumn<CursColectiu, String> colID = new TableColumn<>("ID");
         TableColumn<CursColectiu, String> colNom = new TableColumn<>("Nom");
         TableColumn<CursColectiu, String> colPreu = new TableColumn<>("Preu hora");
-        
+
         colID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colPreu.setCellValueFactory(new PropertyValueFactory<>("preu_hora")); 
+        colPreu.setCellValueFactory(new PropertyValueFactory<>("preu_hora"));
 
-        tblCursos.getColumns().addAll(colID,colNom,colPreu);
-        
-        
-        tblCursos.getItems().addAll(con.getCursColList());
-        
-        
+        tblCursos.getColumns().addAll(colID, colNom, colPreu);
 
-        
-       vb.getChildren().add(tblCursos);
-       
-       tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-           @Override
+        tblCursos.getItems().addAll(conn.getCursColList());
+
+        vb.getChildren().add(tblCursos);
+
+        tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursColectiu curs = (CursColectiu) newValue;
-                
-                if (curs != null){
+
+                if (curs != null) {
                     txtCliCursID.setText(Integer.toString(curs.getID()));
                     txtCliCursNom.setText(curs.getNom());
                     txtCliCursPreu.setText(Integer.toString(curs.getPreu_hora()));
                 }
-                
+
             }
         });
         return vb;
     }
-    
-    private Pane cursosCompeticio()throws Exception{
-        Connexio con = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
-        
+
+    private Pane cursosCompeticio() throws Exception {
+        Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+
         VBox vb = new VBox();
         TableView<CursCompeticio> tblCursos = new TableView<>();
         TableColumn<CursCompeticio, String> colID = new TableColumn<>("ID");
@@ -371,37 +418,33 @@ public class EskyDAM extends Application{
         colPreu.setCellValueFactory(new PropertyValueFactory<>("preu_hora"));
         colNivell.setCellValueFactory(new PropertyValueFactory<>("nivell"));
 
-        
-        tblCursos.getColumns().addAll(colID,colNom,colPreu,colNivell);
-        
-        tblCursos.getItems().addAll(con.getCursComList());
-        
-        
+        tblCursos.getColumns().addAll(colID, colNom, colPreu, colNivell);
 
-        
-       vb.getChildren().add(tblCursos);
-       
-       tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+        tblCursos.getItems().addAll(conn.getCursComList());
+
+        vb.getChildren().add(tblCursos);
+
+        tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursCompeticio curs = (CursCompeticio) newValue;
-                
-                if (curs != null){
+
+                if (curs != null) {
                     txtCliCursID.setText(Integer.toString(curs.getID()));
                     txtCliCursNom.setText(curs.getNom());
                     txtCliCursPreu.setText(Integer.toString(curs.getPreu_hora()));
                     txtCliCursNivell.setText(curs.getNivell());
-                    
+
                 }
-                
+
             }
         });
         return vb;
     }
-    
-    private Pane cursosIndividuals() throws Exception{
-        Connexio con = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
-        
+
+    private Pane cursosIndividuals() throws Exception {
+        Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+
         VBox vb = new VBox();
         TableView<CursIndividual> tblCursos = new TableView<>();
         TableColumn<CursIndividual, String> colID = new TableColumn<>("ID");
@@ -410,80 +453,71 @@ public class EskyDAM extends Application{
         colID.setCellValueFactory(new PropertyValueFactory<>("ID"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colPreu.setCellValueFactory(new PropertyValueFactory<>("preu_hora"));
-        
-        tblCursos.getColumns().addAll(colID,colNom,colPreu);
-        
-        tblCursos.getItems().addAll(con.getCursIndList());
-        
-        
 
-        
-       vb.getChildren().add(tblCursos);
-       
-       tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+        tblCursos.getColumns().addAll(colID, colNom, colPreu);
+
+        tblCursos.getItems().addAll(conn.getCursIndList());
+
+        vb.getChildren().add(tblCursos);
+
+        tblCursos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 CursIndividual curs = (CursIndividual) newValue;
-                
-                if (curs != null){
+
+                if (curs != null) {
                     txtCliCursID.setText(Integer.toString(curs.getID()));
                     txtCliCursNom.setText(curs.getNom());
                     txtCliCursPreu.setText(Integer.toString(curs.getPreu_hora()));
-                    
+
                 }
-                
+
             }
         });
         return vb;
     }
-    
-    private Pane partEsquerra() throws Exception{
-        Connexio con = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
-        VBox vLateral = new VBox(); 
-        Label lblClient = new Label ("Clients");
+
+    private Pane partEsquerra() throws Exception {
+        Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+        VBox vLateral = new VBox();
+        Label lblClient = new Label("Clients");
         lblClient.setFont(new Font(30));
         lblClient.setTextFill(Color.web("#0e0edb"));
         vLateral.setAlignment(Pos.CENTER);
-        
+
         TableView<Client> tblClients = new TableView<>();
         TableColumn<Client, String> colDni = new TableColumn<>("DNI");
         TableColumn<Client, String> colNom = new TableColumn<>("Nom");
         TableColumn<Client, String> colCognoms = new TableColumn<>("Cognoms");
-        tblClients.getColumns().addAll(colDni,colNom,colCognoms);
-        
+        tblClients.getColumns().addAll(colDni, colNom, colCognoms);
+
         colDni.setCellValueFactory(new PropertyValueFactory<>("dni"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colCognoms.setCellValueFactory(new PropertyValueFactory<>("cognoms"));
-        
 
-        
-        ImageView logo2 = new ImageView ("Imatges/User.png");
+        ImageView logo2 = new ImageView("Imatges/User.png");
         logo2.setFitHeight(100);
         logo2.setFitWidth(100);
         logo2.setTranslateY(20);
-        
-        
-        
-        tblClients.getItems().addAll(con.getPersonList());
-                
-        vLateral.getChildren().addAll(lblClient,tblClients,logo2);
-        
-        
+
+        tblClients.getItems().addAll(conn.getPersonList());
+
+        vLateral.getChildren().addAll(lblClient, tblClients, logo2);
+
         tblClients.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 Client client = (Client) newValue;
-                
-                if (client != null){
+
+                if (client != null) {
                     txtCliNom.setText(client.getNom());
                     txtCliDni.setText(client.getDni());
                     txtCliCognoms.setText(client.getCognoms());
                 }
-                
+
             }
         });
-        
-        
-        return vLateral; 
-    } 
+
+        return vLateral;
+    }
 }
