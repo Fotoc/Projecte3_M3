@@ -243,7 +243,6 @@ public class EskyDAM extends Application {
                 Logger.getLogger(EskyDAM.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
 
         Button btn3 = new Button("Tancar");
         btn3.setTextFill(Color.web("#ffffff"));
@@ -272,7 +271,7 @@ public class EskyDAM extends Application {
 
     }
 
-    private void llogar() throws SQLException{
+    private void llogar() throws SQLException {
 
         if (txtCliDni.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -303,17 +302,17 @@ public class EskyDAM extends Application {
         Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/esqui;";
+            String url = "jdbc:mysql://localhost:3306/esqui";
             con = DriverManager.getConnection(url, "root", "1234");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //Connexio conn = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
+        //Connexio con = new Connexio("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/esqui", "root", "1234");
         String dni = txtCliDni.getText();
         String id = txtCliCursID.getText();
 
-        String sentenciaSql = "{call llogarCurs(?,?,2)}";
+        String sentenciaSql = "call llogarCurs(?,?,2)";
 
         CallableStatement cs = con.prepareCall(sentenciaSql);
 
@@ -321,7 +320,6 @@ public class EskyDAM extends Application {
         cs.setString(2, dni);
         cs.execute();
         System.out.print("curs llogat\n");
-
 
         //PreparedStatement sentencia = null;
         /*try {
